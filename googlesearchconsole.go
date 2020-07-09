@@ -18,7 +18,7 @@ type GoogleSearchConsole struct {
 	// config
 	ClientID     string
 	ClientSecret string
-	ClientURL    string
+	SiteURL      string
 	RedirectURL  string
 	AuthURL      string
 	TokenURL     string
@@ -34,16 +34,16 @@ func (gsc *GoogleSearchConsole) Init() error {
 	if gsc.BaseURL == "" {
 		return &types.ErrorString{"GoogleSearchConsole BaseURL not provided"}
 	}
-	if gsc.ClientURL == "" {
-		return &types.ErrorString{"GoogleSearchConsole ClientURL not provided"}
+	if gsc.SiteURL == "" {
+		return &types.ErrorString{"GoogleSearchConsole SiteURL not provided"}
 	}
 
 	if !strings.HasSuffix(gsc.BaseURL, "/") {
 		gsc.BaseURL = gsc.BaseURL + "/"
 	}
 
-	if !strings.HasSuffix(gsc.ClientURL, "/") {
-		gsc.ClientURL = gsc.ClientURL + "/"
+	if !strings.HasSuffix(gsc.SiteURL, "/") {
+		gsc.SiteURL = gsc.SiteURL + "/"
 	}
 
 	return nil
@@ -113,14 +113,10 @@ func (gsc *GoogleSearchConsole) PostBuffer(url string, buf *bytes.Buffer, model 
 
 	defer res.Body.Close()
 
-	fmt.Println("res.Body", res.Body)
-
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println(string(b))
 
 	err = json.Unmarshal(b, &model)
 	if err != nil {

@@ -5,6 +5,12 @@ import (
 	"net/url"
 )
 
+type QueryRequest struct {
+	StartDate  string   `json:"startDate"`
+	EndDate    string   `json:"endDate"`
+	Dimensions []string `json:"dimensions"`
+}
+
 type QueryResponse struct {
 	Rows                    []QueryResponseRow `json:"rows"`
 	ResponseAggregationType string             `json:"responseAggregationType"`
@@ -19,8 +25,8 @@ type QueryResponseRow struct {
 }
 
 func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, error) {
-	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.BaseURL, url.QueryEscape(gsc.ClientURL))
-	fmt.Println(url)
+	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.BaseURL, url.QueryEscape(gsc.SiteURL))
+	//fmt.Println(url)
 
 	response := QueryResponse{}
 
