@@ -35,6 +35,7 @@ github.com/Joker/hpp v1.0.0/go.mod h1:8x5n+M1Hp5hC0g8okX3sR3vFQwynaX/UgSOM9MeBKz
 github.com/Joker/jade v1.0.1-0.20190614124447-d475f43051e7/go.mod h1:6E6s8o2AE4KhCrqr6GRJjdC/gNfTdxkIXvuGZZda2VM=
 github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200619200356-467c4688783a h1:y+9QIet6bpuKd9Yp4y+0oM27gc7+pilhIor+GiwX1/U=
 github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200619200356-467c4688783a/go.mod h1:TQI3OkAtylNvDNxLwTDuF+mqrRt69YdpoOH/farM2n0=
+github.com/Leapforce-nl/go_errortools v0.0.0-20200218173102-e74ff3d10089 h1:HkMVwjlII4vQUBFwHyeYSVNGad85Zk0UDoxMZUhNQuA=
 github.com/Leapforce-nl/go_errortools v0.0.0-20200218173102-e74ff3d10089/go.mod h1:goG+xW3RRxvv/HpoxmaTFMdH+a/YeiZseoGzL9RwBAE=
 github.com/Leapforce-nl/go_types v0.0.0-20200126202922-ba4900de15b8 h1:q0/mdn+TnZqBB439lOeuLPHPnQaVYCQL2B4BRLbCbuQ=
 github.com/Leapforce-nl/go_types v0.0.0-20200126202922-ba4900de15b8/go.mod h1:AuUJ0pyk3Xc6IgEuzCr5NvEl277YQwiIgJ12/SfmByI=

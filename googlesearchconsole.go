@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	bigquerytools "github.com/Leapforce-nl/go_bigquerytools"
 	types "github.com/Leapforce-nl/go_types"
@@ -17,16 +18,35 @@ type GoogleSearchConsole struct {
 	// config
 	ClientID     string
 	ClientSecret string
+	ClientURL    string
 	RedirectURL  string
 	AuthURL      string
 	TokenURL     string
-	QueryURL     string
+	BaseURL      string
 	Token        *Token
-	// bigquery
-	BigQuery          *bigquerytools.BigQuery
-	BigQueryDataset   string
-	BigQueryTablename string
-	IsLive            bool
+	BigQuery     *bigquerytools.BigQuery
+	IsLive       bool
+}
+
+// methods
+//
+func (gsc *GoogleSearchConsole) Init() error {
+	if gsc.BaseURL == "" {
+		return &types.ErrorString{"GoogleSearchConsole BaseURL not provided"}
+	}
+	if gsc.ClientURL == "" {
+		return &types.ErrorString{"GoogleSearchConsole ClientURL not provided"}
+	}
+
+	if !strings.HasSuffix(gsc.BaseURL, "/") {
+		gsc.BaseURL = gsc.BaseURL + "/"
+	}
+
+	if !strings.HasSuffix(gsc.ClientURL, "/") {
+		gsc.ClientURL = gsc.ClientURL + "/"
+	}
+
+	return nil
 }
 
 func (gsc *GoogleSearchConsole) GetHttpClient() (*http.Client, error) {
