@@ -236,7 +236,7 @@ func (gsc *GoogleSearchConsole) InitToken() error {
 		return &types.ErrorString{"GoogleSearchConsole variable not initialized"}
 	}
 
-	url := fmt.Sprintf("%s?client_id=%s&response_type=code&redirect_uri=%s&scope=%s&access_type=offline&prompt=consent", gsc.AuthURL, gsc.ClientID, gsc.RedirectURL, "https://www.googleapis.com/auth/webmasters")
+	url := fmt.Sprintf("%s?client_id=%s&response_type=code&redirect_uri=%s&scope=%s&access_type=offline&prompt=consent", gsc.AuthURL, gsc.ClientID, gsc.RedirectURL, "https://www.googleapis.com/auth/webmasters.readonly")
 
 	fmt.Println("Go to this url to get new access token:\n")
 	fmt.Println(url + "\n")
