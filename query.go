@@ -9,6 +9,7 @@ type QueryRequest struct {
 	StartDate  string   `json:"startDate"`
 	EndDate    string   `json:"endDate"`
 	Dimensions []string `json:"dimensions"`
+	RowLimit   int      `json:"rowLimit"`
 }
 
 type QueryResponse struct {
