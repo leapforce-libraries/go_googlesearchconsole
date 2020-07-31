@@ -30,7 +30,7 @@ type GoogleSearchConsole struct {
 
 // methods
 //
-func (gsc *GoogleSearchConsole) Init() error {
+func (gsc *GoogleSearchConsole) Validate() error {
 	if gsc.BaseURL == "" {
 		return &types.ErrorString{"GoogleSearchConsole BaseURL not provided"}
 	}
@@ -104,10 +104,10 @@ func (gsc *GoogleSearchConsole) PostBuffer(url string, buf *bytes.Buffer, model 
 
 	// Check HTTP StatusCode
 	if res.StatusCode < 200 || res.StatusCode > 299 {
-		fmt.Println("ERROR in Post")
-		fmt.Println(url)
+		fmt.Println("ERROR in Post:", url)
+		//fmt.Println(url)
 		fmt.Println("StatusCode", res.StatusCode)
-		fmt.Println(gsc.Token.AccessToken)
+		//fmt.Println(gsc.Token.AccessToken)
 		return gsc.PrintError(res)
 	}
 

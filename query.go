@@ -26,12 +26,17 @@ type QueryResponseRow struct {
 }
 
 func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, error) {
+	err := gsc.Validate()
+	if err != nil {
+		return nil, err
+	}
+
 	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.BaseURL, url.QueryEscape(gsc.SiteURL))
 	//fmt.Println(url)
 
 	response := QueryResponse{}
 
-	err := gsc.PostBytes(url, body, &response)
+	err = gsc.PostBytes(url, body, &response)
 	if err != nil {
 		return nil, err
 	}
