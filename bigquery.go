@@ -8,7 +8,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-const tableRefreshToken string = "google_search_console.tokens"
+const tableRefreshToken string = "leapforce.refreshtokens"
+const api string = "GoogleSearchConsole"
 
 // BigQueryGetRefreshToken get refreshtoken from BigQuery
 //
@@ -23,7 +24,8 @@ func (gsc *GoogleSearchConsole) GetTokenFromBigQuery() error {
 
 	ctx := context.Background()
 
-	sql := "SELECT refreshtoken AS RefreshToken FROM `" + tableRefreshToken + "` WHERE client_id = '" + gsc.ClientID + "'"
+	//sql := "SELECT refreshtoken AS RefreshToken FROM `" + tableRefreshToken + "` WHERE client_id = '" + gsc.ClientID + "'"
+	sql := fmt.Sprintf("SELECT refreshtoken AS RefreshToken FROM `%s` WHERE api = '%s' AND client_id = '%s'", tableRefreshToken, api, gsc.ClientID)
 
 	//fmt.Println(sql)
 
@@ -72,14 +74,15 @@ func (gsc *GoogleSearchConsole) SaveTokenToBigQuery() error {
 	ctx := context.Background()
 
 	sql := "MERGE `" + tableRefreshToken + "` AS TARGET " +
-		"USING  (select '" + gsc.ClientID + "' AS client_id,'" + gsc.Token.RefreshToken + "' AS refreshtoken) AS SOURCE " +
-		" ON TARGET.client_id = SOURCE.client_id " +
+		"USING  (SELECT '" + api + "' AS api,'" + gsc.ClientID + "' AS client_id,'" + gsc.Token.RefreshToken + "' AS refreshtoken) AS SOURCE " +
+		" ON TARGET.api = SOURCE.api " +
+		" AND TARGET.client_id = SOURCE.client_id " +
 		"WHEN MATCHED THEN " +
 		"	UPDATE " +
 		"	SET refreshtoken = SOURCE.refreshtoken " +
 		"WHEN NOT MATCHED BY TARGET THEN " +
-		"	INSERT (client_id, refreshtoken) " +
-		"	VALUES (SOURCE.client_id, SOURCE.refreshtoken)"
+		"	INSERT (api, client_id, refreshtoken) " +
+		"	VALUES (SOURCE.api, SOURCE.client_id, SOURCE.refreshtoken)"
 
 	q := bqClient.Query(sql)
 
