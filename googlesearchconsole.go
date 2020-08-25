@@ -10,32 +10,42 @@ import (
 
 	bigquerytools "github.com/Leapforce-nl/go_bigquerytools"
 	types "github.com/Leapforce-nl/go_types"
+
+	googleoauth2 "github.com/Leapforce-nl/go_googleoauth2"
 )
+
+const apiName string = "GoogleSearchConsole"
 
 // GoogleSearchConsole stores GoogleSearchConsole configuration
 //
 type GoogleSearchConsole struct {
-	// config
-	ClientID     string
-	ClientSecret string
-	SiteURL      string
-	RedirectURL  string
-	AuthURL      string
-	TokenURL     string
-	BaseURL      string
-	Token        *Token
-	BigQuery     *bigquerytools.BigQuery
-	IsLive       bool
+	SiteURL string
+	BaseURL string
+	oAuth2  *googleoauth2.GoogleOAuth2
 }
 
 // methods
 //
+func (gsc *GoogleSearchConsole) InitOAuth2(clientID string, clientSecret string, scopes []string, bigQuery *bigquerytools.BigQuery, isLive bool) error {
+	_oAuth2 := new(googleoauth2.GoogleOAuth2)
+	_oAuth2.ApiName = apiName
+	_oAuth2.ClientID = clientID
+	_oAuth2.ClientSecret = clientSecret
+	_oAuth2.Scopes = scopes
+	_oAuth2.BigQuery = bigQuery
+	_oAuth2.IsLive = isLive
+
+	gsc.oAuth2 = _oAuth2
+
+	return nil
+}
+
 func (gsc *GoogleSearchConsole) Validate() error {
 	if gsc.BaseURL == "" {
-		return &types.ErrorString{"GoogleSearchConsole BaseURL not provided"}
+		return &types.ErrorString{fmt.Sprintf("%s BaseURL not provided", apiName)}
 	}
 	if gsc.SiteURL == "" {
-		return &types.ErrorString{"GoogleSearchConsole SiteURL not provided"}
+		return &types.ErrorString{fmt.Sprintf("%s SiteURL not provided", apiName)}
 	}
 
 	if !strings.HasSuffix(gsc.BaseURL, "/") {
@@ -55,7 +65,7 @@ func (gsc *GoogleSearchConsole) GetHttpClient() (*http.Client, error) {
 		return nil, err
 	}*/
 
-	err := gsc.ValidateToken()
+	err := gsc.oAuth2.ValidateToken()
 	if err != nil {
 		return nil, err
 	}
@@ -86,17 +96,17 @@ func (gsc *GoogleSearchConsole) PostBuffer(url string, buf *bytes.Buffer, model 
 		return err
 	}
 
-	LockToken()
+	gsc.oAuth2.LockToken()
 
 	// Add authorization token to header
-	var bearer = "Bearer " + gsc.Token.AccessToken
+	var bearer = "Bearer " + gsc.oAuth2.Token.AccessToken
 	req.Header.Add("authorization", bearer)
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 
 	// Send out the HTTP request
 	res, err := client.Do(req)
-	UnlockToken()
+	gsc.oAuth2.UnlockToken()
 	if err != nil {
 		fmt.Println("errDo")
 		return err

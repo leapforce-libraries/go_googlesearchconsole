@@ -3,9 +3,7 @@ module github.com/Leapforce-nl/go_googlesearchconsole
 go 1.13
 
 require (
-	github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200619200356-467c4688783a
-	github.com/Leapforce-nl/go_errortools v0.0.0-20200218173102-e74ff3d10089
+	github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200710213042-75144903d632
+	github.com/Leapforce-nl/go_googleoauth2 v0.0.0-20200825104104-ab29528c17b7
 	github.com/Leapforce-nl/go_types v0.0.0-20200126202922-ba4900de15b8
-	github.com/getsentry/sentry-go v0.6.1
-	google.golang.org/api v0.15.0
 )
