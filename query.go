@@ -31,7 +31,7 @@ func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, error) {
 		return nil, err
 	}
 
-	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.BaseURL, url.QueryEscape(gsc.SiteURL))
+	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.baseURL, url.QueryEscape(gsc.SiteURL))
 	//fmt.Println(url)
 
 	response := QueryResponse{}

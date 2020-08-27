@@ -20,13 +20,16 @@ const apiName string = "GoogleSearchConsole"
 //
 type GoogleSearchConsole struct {
 	SiteURL string
-	BaseURL string
+	baseURL string
 	oAuth2  *googleoauth2.GoogleOAuth2
 }
 
 // methods
 //
-func (gsc *GoogleSearchConsole) InitOAuth2(clientID string, clientSecret string, scopes []string, bigQuery *bigquerytools.BigQuery, isLive bool) error {
+func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string, scopes []string, bigQuery *bigquerytools.BigQuery, isLive bool) (*GoogleSearchConsole, error) {
+	gsc := GoogleSearchConsole{}
+	gsc.baseURL = baseURL
+
 	_oAuth2 := new(googleoauth2.GoogleOAuth2)
 	_oAuth2.ApiName = apiName
 	_oAuth2.ClientID = clientID
@@ -37,19 +40,19 @@ func (gsc *GoogleSearchConsole) InitOAuth2(clientID string, clientSecret string,
 
 	gsc.oAuth2 = _oAuth2
 
-	return nil
+	return &gsc, nil
 }
 
 func (gsc *GoogleSearchConsole) Validate() error {
-	if gsc.BaseURL == "" {
-		return &types.ErrorString{fmt.Sprintf("%s BaseURL not provided", apiName)}
+	if gsc.baseURL == "" {
+		return &types.ErrorString{fmt.Sprintf("%s baseURL not provided", apiName)}
 	}
 	if gsc.SiteURL == "" {
 		return &types.ErrorString{fmt.Sprintf("%s SiteURL not provided", apiName)}
 	}
 
-	if !strings.HasSuffix(gsc.BaseURL, "/") {
-		gsc.BaseURL = gsc.BaseURL + "/"
+	if !strings.HasSuffix(gsc.baseURL, "/") {
+		gsc.baseURL = gsc.baseURL + "/"
 	}
 
 	if !strings.HasSuffix(gsc.SiteURL, "/") {
