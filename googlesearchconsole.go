@@ -27,9 +27,8 @@ type GoogleSearchConsole struct {
 
 // methods
 //
-func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) *GoogleSearchConsole {
+func NewGoogleSearchConsole(clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) *GoogleSearchConsole {
 	gsc := GoogleSearchConsole{}
-	//gsc.baseURL = baseURL
 
 	maxRetries := uint(3)
 	config := go_oauth2.OAuth2Config{
