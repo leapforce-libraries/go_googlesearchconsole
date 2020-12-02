@@ -2,9 +2,7 @@ package googlesearchconsole
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
-	"strings"
 
 	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
 	errortools "github.com/leapforce-libraries/go_errortools"
@@ -13,8 +11,8 @@ import (
 )
 
 const (
-	apiName string = "GoogleSearchConsole"
-	//apiURL          string = "https://www.googleapis.com/calendar/v3"
+	apiName         string = "GoogleSearchConsole"
+	apiURL          string = "https://www.googleapis.com/webmasters/v3"
 	authURL         string = "https://accounts.google.com/o/oauth2/v2/auth"
 	tokenURL        string = "https://oauth2.googleapis.com/token"
 	tokenHTTPMethod string = http.MethodPost
@@ -24,16 +22,14 @@ const (
 // GoogleSearchConsole stores GoogleSearchConsole configuration
 //
 type GoogleSearchConsole struct {
-	SiteURL string
-	baseURL string
-	oAuth2  *go_oauth2.OAuth2
+	oAuth2 *go_oauth2.OAuth2
 }
 
 // methods
 //
 func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) *GoogleSearchConsole {
 	gsc := GoogleSearchConsole{}
-	gsc.baseURL = baseURL
+	//gsc.baseURL = baseURL
 
 	maxRetries := uint(3)
 	config := go_oauth2.OAuth2Config{
@@ -50,25 +46,6 @@ func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string
 	gsc.oAuth2 = go_oauth2.NewOAuth(config, bigQuery, isLive)
 
 	return &gsc
-}
-
-func (gsc *GoogleSearchConsole) Validate() *errortools.Error {
-	if gsc.baseURL == "" {
-		return errortools.ErrorMessage(fmt.Sprintf("%s baseURL not provided", apiName))
-	}
-	if gsc.SiteURL == "" {
-		return errortools.ErrorMessage(fmt.Sprintf("%s SiteURL not provided", apiName))
-	}
-
-	if !strings.HasSuffix(gsc.baseURL, "/") {
-		gsc.baseURL = gsc.baseURL + "/"
-	}
-
-	if !strings.HasSuffix(gsc.SiteURL, "/") {
-		gsc.SiteURL = gsc.SiteURL + "/"
-	}
-
-	return nil
 }
 
 func (gsc *GoogleSearchConsole) post(url string, buf *bytes.Buffer, model interface{}) (*http.Request, *http.Response, *errortools.Error) {
