@@ -1,7 +1,7 @@
 package googlesearchconsole
 
 type GoogleSearchControlError struct {
-	Err GoogleSearchControlInnerError `json:"error"`
+	Error GoogleSearchControlInnerError `json:"error"`
 }
 type GoogleSearchControlInnerError struct {
 	Code    int                               `json:"code"`

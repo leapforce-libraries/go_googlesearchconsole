@@ -55,8 +55,8 @@ func (gsc *GoogleSearchConsole) post(url string, buf *bytes.Buffer, model interf
 	err := GoogleSearchControlError{}
 	request, response, e := gsc.oAuth2.Post(url, buf, model, &err)
 	if e != nil {
-		if err.Err.Message != "" {
-			e.SetMessage(err.Err.Message)
+		if err.Error.Message != "" {
+			e.SetMessage(err.Error.Message)
 		}
 
 		return request, response, e
