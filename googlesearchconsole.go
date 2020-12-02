@@ -31,7 +31,7 @@ type GoogleSearchConsole struct {
 
 // methods
 //
-func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) (*GoogleSearchConsole, error) {
+func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) *GoogleSearchConsole {
 	gsc := GoogleSearchConsole{}
 	gsc.baseURL = baseURL
 
@@ -49,7 +49,7 @@ func NewGoogleSearchConsole(baseURL string, clientID string, clientSecret string
 	}
 	gsc.oAuth2 = go_oauth2.NewOAuth(config, bigQuery, isLive)
 
-	return &gsc, nil
+	return &gsc
 }
 
 func (gsc *GoogleSearchConsole) Validate() *errortools.Error {

@@ -29,9 +29,9 @@ type QueryResponseRow struct {
 }
 
 func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, *errortools.Error) {
-	err := gsc.Validate()
-	if err != nil {
-		return nil, err
+	e := gsc.Validate()
+	if e != nil {
+		return nil, e
 	}
 
 	url := fmt.Sprintf("%ssites/%s/searchAnalytics/query", gsc.baseURL, url.QueryEscape(gsc.SiteURL))
@@ -39,7 +39,7 @@ func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, *errortools.
 
 	response := QueryResponse{}
 
-	_, _, e := gsc.post(url, bytes.NewBuffer(body), &response)
+	_, _, e = gsc.post(url, bytes.NewBuffer(body), &response)
 	if e != nil {
 		return nil, e
 	}
