@@ -2,6 +2,7 @@ package googlesearchconsole
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 
 	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
@@ -54,6 +55,8 @@ func (gsc *GoogleSearchConsole) InitToken() *errortools.Error {
 func (gsc *GoogleSearchConsole) post(url string, buf *bytes.Buffer, model interface{}) (*http.Request, *http.Response, *errortools.Error) {
 	err := GoogleSearchControlError{}
 	request, response, e := gsc.oAuth2.Post(url, buf, model, &err)
+
+	fmt.Println(err)
 	if e != nil {
 		if err.Error.Message != "" {
 			e.SetMessage(err.Error.Message)
