@@ -1,8 +1,11 @@
 package googlesearchconsole
 
 import (
+	"bytes"
 	"fmt"
 	"net/url"
+
+	errortools "github.com/leapforce-libraries/go_errortools"
 )
 
 type QueryRequest struct {
@@ -25,7 +28,7 @@ type QueryResponseRow struct {
 	Position    float64  `json:"position"`
 }
 
-func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, error) {
+func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, *errortools.Error) {
 	err := gsc.Validate()
 	if err != nil {
 		return nil, err
@@ -36,9 +39,9 @@ func (gsc *GoogleSearchConsole) Query(body []byte) (*QueryResponse, error) {
 
 	response := QueryResponse{}
 
-	err = gsc.PostBytes(url, body, &response)
-	if err != nil {
-		return nil, err
+	_, _, e := gsc.post(url, bytes.NewBuffer(body), &response)
+	if e != nil {
+		return nil, e
 	}
 
 	return &response, nil
