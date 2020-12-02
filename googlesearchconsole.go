@@ -47,6 +47,10 @@ func NewGoogleSearchConsole(clientID string, clientSecret string, scope string, 
 	return &gsc
 }
 
+func (gsc *GoogleSearchConsole) InitToken() *errortools.Error {
+	return gsc.oAuth2.InitToken()
+}
+
 func (gsc *GoogleSearchConsole) post(url string, buf *bytes.Buffer, model interface{}) (*http.Request, *http.Response, *errortools.Error) {
 	err := GoogleSearchControlError{}
 	request, response, e := gsc.oAuth2.Post(url, buf, model, &err)
