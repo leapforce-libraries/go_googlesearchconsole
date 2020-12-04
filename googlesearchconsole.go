@@ -7,6 +7,7 @@ import (
 	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
 	errortools "github.com/leapforce-libraries/go_errortools"
 
+	google "github.com/leapforce-libraries/go_google"
 	go_oauth2 "github.com/leapforce-libraries/go_oauth2"
 )
 
@@ -27,7 +28,7 @@ type GoogleSearchConsole struct {
 
 // methods
 //
-func NewGoogleSearchConsole(clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) *GoogleSearchConsole {
+func NewGoogleSearchConsole(clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery) *GoogleSearchConsole {
 	gsc := GoogleSearchConsole{}
 
 	maxRetries := uint(3)
@@ -42,7 +43,7 @@ func NewGoogleSearchConsole(clientID string, clientSecret string, scope string, 
 		TokenHTTPMethod: tokenHTTPMethod,
 		MaxRetries:      &maxRetries,
 	}
-	gsc.oAuth2 = go_oauth2.NewOAuth(config, bigQuery, isLive)
+	gsc.oAuth2 = go_oauth2.NewOAuth(config, bigQuery)
 
 	return &gsc
 }
@@ -52,7 +53,7 @@ func (gsc *GoogleSearchConsole) InitToken() *errortools.Error {
 }
 
 func (gsc *GoogleSearchConsole) post(url string, buf *bytes.Buffer, model interface{}) (*http.Request, *http.Response, *errortools.Error) {
-	err := GoogleSearchControlError{}
+	err := google.ErrorResponse{}
 	request, response, e := gsc.oAuth2.Post(url, buf, model, &err)
 
 	if e != nil {
