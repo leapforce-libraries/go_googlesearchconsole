@@ -34,7 +34,7 @@ func (gsc *GoogleSearchConsole) Query(body []byte, siteURL string) (*QueryRespon
 
 	response := QueryResponse{}
 
-	_, _, e := gsc.post(url, bytes.NewBuffer(body), &response)
+	_, _, e := gsc.Client.Post(url, bytes.NewBuffer(body), &response)
 	if e != nil {
 		return nil, e
 	}
