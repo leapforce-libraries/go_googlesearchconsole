@@ -28,13 +28,13 @@ type QueryResponseRow struct {
 	Position    float64  `json:"position"`
 }
 
-func (gsc *GoogleSearchConsole) Query(body []byte, siteURL string) (*QueryResponse, *errortools.Error) {
+func (service *Service) Query(body []byte, siteURL string) (*QueryResponse, *errortools.Error) {
 	url := fmt.Sprintf("%s/sites/%s/searchAnalytics/query", apiURL, url.QueryEscape(siteURL))
 	//fmt.Println(url)
 
 	response := QueryResponse{}
 
-	_, _, e := gsc.Client.Post(url, bytes.NewBuffer(body), &response)
+	_, _, e := service.googleService.Post(url, bytes.NewBuffer(body), &response)
 	if e != nil {
 		return nil, e
 	}
