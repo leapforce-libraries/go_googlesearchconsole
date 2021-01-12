@@ -1,8 +1,6 @@
 package googlesearchconsole
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/url"
 
@@ -34,17 +32,12 @@ func (service *Service) Query(queryRequest *QueryRequest, siteURL string) (*Quer
 		return nil, nil
 	}
 
-	b, err := json.Marshal(*queryRequest)
-	if err != nil {
-		return nil, errortools.ErrorMessage(err)
-	}
-
 	url := fmt.Sprintf("%s/sites/%s/searchAnalytics/query", APIURL, url.QueryEscape(siteURL))
 	//fmt.Println(url)
 
 	response := QueryResponse{}
 
-	_, _, e := service.googleService.Post(url, bytes.NewBuffer(b), &response)
+	_, _, e := service.googleService.Post(url, *queryRequest, &response)
 	if e != nil {
 		return nil, e
 	}
