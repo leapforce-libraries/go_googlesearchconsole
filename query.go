@@ -34,7 +34,7 @@ func (service *Service) Query(queryRequest *QueryRequest, siteURL string) (*Quer
 		return nil, nil
 	}
 
-	b, err := json.Marshal(queryRequest)
+	b, err := json.Marshal(*queryRequest)
 	if err != nil {
 		return nil, errortools.ErrorMessage(err)
 	}
