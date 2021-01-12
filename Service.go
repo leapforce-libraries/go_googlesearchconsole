@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	apiName string = "GoogleSearchConsole"
-	apiURL  string = "https://www.googleapis.com/webmasters/v3"
+	APIName    string = "GoogleSearchConsole"
+	APIURL     string = "https://www.googleapis.com/webmasters/v3"
+	DateFormat string = "2006-01-02"
 )
 
 // Service stores Service configuration
@@ -20,7 +21,7 @@ type Service struct {
 //
 func NewService(clientID string, clientSecret string, scope string, bigQuery *google.BigQuery) *Service {
 	config := google.ServiceConfig{
-		APIName:      apiName,
+		APIName:      APIName,
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		Scope:        scope,
