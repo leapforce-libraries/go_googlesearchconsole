@@ -5,6 +5,7 @@ import (
 	"net/url"
 
 	errortools "github.com/leapforce-libraries/go_errortools"
+	oauth2 "github.com/leapforce-libraries/go_oauth2"
 )
 
 type QueryRequest struct {
@@ -32,12 +33,14 @@ func (service *Service) Query(queryRequest *QueryRequest, siteURL string) (*Quer
 		return nil, nil
 	}
 
-	url := fmt.Sprintf("%s/sites/%s/searchAnalytics/query", APIURL, url.QueryEscape(siteURL))
-	//fmt.Println(url)
-
 	response := QueryResponse{}
 
-	_, _, e := service.googleService.Post(url, *queryRequest, &response)
+	requestConfig := oauth2.RequestConfig{
+		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", APIURL, url.QueryEscape(siteURL))),
+		BodyModel:     *queryRequest,
+		ResponseModel: &response,
+	}
+	_, _, e := service.googleService.Post(&requestConfig)
 	if e != nil {
 		return nil, e
 	}

@@ -1,6 +1,8 @@
 package googlesearchconsole
 
 import (
+	"fmt"
+
 	errortools "github.com/leapforce-libraries/go_errortools"
 	google "github.com/leapforce-libraries/go_google"
 	bigquery "github.com/leapforce-libraries/go_google/bigquery"
@@ -31,6 +33,10 @@ func NewService(clientID string, clientSecret string, scope string, bigQueryServ
 	googleService := google.NewService(config, bigQueryService)
 
 	return &Service{googleService}
+}
+
+func (service *Service) url(path string) string {
+	return fmt.Sprintf("%s/%s", APIURL, path)
 }
 
 func (service *Service) InitToken() *errortools.Error {
