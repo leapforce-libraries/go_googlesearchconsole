@@ -36,7 +36,7 @@ func (service *Service) Query(queryRequest *QueryRequest, siteURL string) (*Quer
 	response := QueryResponse{}
 
 	requestConfig := oauth2.RequestConfig{
-		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", APIURL, url.QueryEscape(siteURL))),
+		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", url.QueryEscape(siteURL))),
 		BodyModel:     *queryRequest,
 		ResponseModel: &response,
 	}
