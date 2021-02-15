@@ -5,7 +5,7 @@ import (
 	"net/url"
 
 	errortools "github.com/leapforce-libraries/go_errortools"
-	oauth2 "github.com/leapforce-libraries/go_oauth2"
+	go_http "github.com/leapforce-libraries/go_http"
 )
 
 type QueryRequest struct {
@@ -35,7 +35,7 @@ func (service *Service) Query(queryRequest *QueryRequest, siteURL string) (*Quer
 
 	response := QueryResponse{}
 
-	requestConfig := oauth2.RequestConfig{
+	requestConfig := go_http.RequestConfig{
 		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", url.QueryEscape(siteURL))),
 		BodyModel:     *queryRequest,
 		ResponseModel: &response,
