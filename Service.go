@@ -11,7 +11,7 @@ import (
 const (
 	apiName    string = "GoogleSearchConsole"
 	apiURL     string = "https://www.googleapis.com/webmasters/v3"
-	dateFormat string = "2006-01-02"
+	DateFormat string = "2006-01-02"
 )
 
 // Service stores Service configuration
@@ -20,17 +20,23 @@ type Service struct {
 	googleService *google.Service
 }
 
+type ServiceConfig struct {
+	ClientID     string
+	ClientSecret string
+	Scope        string
+}
+
 // methods
 //
-func NewService(clientID string, clientSecret string, scope string, bigQueryService *bigquery.Service) *Service {
-	config := google.ServiceConfig{
+func NewService(config *ServiceConfig, bigQueryService *bigquery.Service) *Service {
+	googleServiceConfig := google.ServiceConfig{
 		APIName:      apiName,
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		Scope:        scope,
+		ClientID:     config.ClientID,
+		ClientSecret: config.ClientSecret,
+		Scope:        config.Scope,
 	}
 
-	googleService := google.NewService(config, bigQueryService)
+	googleService := google.NewService(googleServiceConfig, bigQueryService)
 
 	return &Service{googleService}
 }
