@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	APIName    string = "GoogleSearchConsole"
-	APIURL     string = "https://www.googleapis.com/webmasters/v3"
-	DateFormat string = "2006-01-02"
+	apiName    string = "GoogleSearchConsole"
+	apiURL     string = "https://www.googleapis.com/webmasters/v3"
+	dateFormat string = "2006-01-02"
 )
 
 // Service stores Service configuration
@@ -24,7 +24,7 @@ type Service struct {
 //
 func NewService(clientID string, clientSecret string, scope string, bigQueryService *bigquery.Service) *Service {
 	config := google.ServiceConfig{
-		APIName:      APIName,
+		APIName:      apiName,
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
 		Scope:        scope,
@@ -36,7 +36,7 @@ func NewService(clientID string, clientSecret string, scope string, bigQueryServ
 }
 
 func (service *Service) url(path string) string {
-	return fmt.Sprintf("%s/%s", APIURL, path)
+	return fmt.Sprintf("%s/%s", apiURL, path)
 }
 
 func (service *Service) InitToken() *errortools.Error {
