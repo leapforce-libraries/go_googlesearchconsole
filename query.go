@@ -22,8 +22,8 @@ type QueryResponse struct {
 
 type QueryResponseRow struct {
 	Keys        []string `json:"keys"`
-	Impressions int      `json:"impressions"`
-	Clicks      int      `json:"clicks"`
+	Impressions float64  `json:"impressions"`
+	Clicks      float64  `json:"clicks"`
 	CTR         float64  `json:"ctr"`
 	Position    float64  `json:"position"`
 }
