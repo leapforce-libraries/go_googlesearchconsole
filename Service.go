@@ -11,7 +11,7 @@ import (
 const (
 	apiName    string = "GoogleSearchConsole"
 	apiURL     string = "https://www.googleapis.com/webmasters/v3"
-	DateFormat string = "2006-01-02"
+	dateFormat string = "2006-01-02"
 )
 
 // Service stores Service configuration
