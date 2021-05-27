@@ -106,11 +106,11 @@ func (service *Service) Query(_queryRequest *QueryRequest, siteURL string) (*Que
 		StartRow: _queryRequest.StartRow,
 	}
 	if _queryRequest.StartDate != nil {
-		startDate := _queryRequest.StartDate.Format(dateFormat)
+		startDate := _queryRequest.StartDate.Format(dateLayout)
 		qr.StartDate = &startDate
 	}
 	if _queryRequest.EndDate != nil {
-		endDate := _queryRequest.EndDate.Format(dateFormat)
+		endDate := _queryRequest.EndDate.Format(dateLayout)
 		qr.EndDate = &endDate
 	}
 	if _queryRequest.Dimensions != nil {
