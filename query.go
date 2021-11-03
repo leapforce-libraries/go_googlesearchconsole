@@ -2,6 +2,7 @@ package googlesearchconsole
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 	"time"
 
@@ -148,11 +149,12 @@ func (service *Service) Query(_queryRequest *QueryRequest, siteURL string) (*Que
 	response := QueryResponse{}
 
 	requestConfig := go_http.RequestConfig{
+		Method:        http.MethodPost,
 		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", url.QueryEscape(siteURL))),
 		BodyModel:     qr,
 		ResponseModel: &response,
 	}
-	_, _, e := service.googleService.Post(&requestConfig)
+	_, _, e := service.googleService.HTTPRequest(&requestConfig)
 	if e != nil {
 		return nil, e
 	}

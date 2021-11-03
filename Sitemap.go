@@ -2,6 +2,7 @@ package googlesearchconsole
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 
 	errortools "github.com/leapforce-libraries/go_errortools"
@@ -47,10 +48,11 @@ func (service *Service) GetSitemaps(config *GetSitemapsConfig) (*[]Sitemap, *err
 	getSitemapsResponse := GetSitemapsResponse{}
 
 	requestConfig := go_http.RequestConfig{
+		Method:        http.MethodGet,
 		URL:           service.url(fmt.Sprintf("sites/%s/sitemaps?%s", url.QueryEscape(config.SiteURL), values.Encode())),
 		ResponseModel: &getSitemapsResponse,
 	}
-	_, _, e := service.googleService.Get(&requestConfig)
+	_, _, e := service.googleService.HTTPRequest(&requestConfig)
 	if e != nil {
 		return nil, e
 	}
