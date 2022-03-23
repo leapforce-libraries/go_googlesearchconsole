@@ -49,7 +49,7 @@ func (service *Service) GetSitemaps(config *GetSitemapsConfig) (*[]Sitemap, *err
 
 	requestConfig := go_http.RequestConfig{
 		Method:        http.MethodGet,
-		Url:           service.url(fmt.Sprintf("sites/%s/sitemaps?%s", url.QueryEscape(config.SiteURL), values.Encode())),
+		Url:           service.url(fmt.Sprintf("sites/%s/sitemaps?%s", url.QueryEscape(config.SiteUrl), values.Encode())),
 		ResponseModel: &getSitemapsResponse,
 	}
 	_, _, e := service.googleService().HttpRequest(&requestConfig)
