@@ -5,77 +5,64 @@ import (
 
 	errortools "github.com/leapforce-libraries/go_errortools"
 	google "github.com/leapforce-libraries/go_google"
-	bigquery "github.com/leapforce-libraries/go_google/bigquery"
 )
 
 const (
 	apiName    string = "GoogleSearchConsole"
-	apiURL     string = "https://www.googleapis.com/webmasters/v3"
+	apiUrl     string = "https://www.googleapis.com/webmasters/v3"
 	dateLayout string = "2006-01-02"
 )
 
-// Service stores Service configuration
-//
-type Service struct {
-	clientID      string
-	googleService *google.Service
-}
+type Service google.Service
 
-type ServiceConfig struct {
-	ClientID     string
-	ClientSecret string
-}
-
-func NewService(serviceConfig *ServiceConfig, bigQueryService *bigquery.Service) (*Service, *errortools.Error) {
-	if serviceConfig == nil {
-		return nil, errortools.ErrorMessage("ServiceConfig must not be a nil pointer")
-	}
-
-	if serviceConfig.ClientID == "" {
-		return nil, errortools.ErrorMessage("ClientID not provided")
-	}
-
-	if serviceConfig.ClientSecret == "" {
-		return nil, errortools.ErrorMessage("ClientSecret not provided")
-	}
-
-	googleServiceConfig := google.ServiceConfig{
-		APIName:      apiName,
-		ClientID:     serviceConfig.ClientID,
-		ClientSecret: serviceConfig.ClientSecret,
-	}
-
-	googleService, e := google.NewService(&googleServiceConfig, bigQueryService)
+func NewServiceWithAccessToken(cfg *google.ServiceWithAccessTokenConfig) (*Service, *errortools.Error) {
+	googleService, e := google.NewServiceWithAccessToken(cfg)
 	if e != nil {
 		return nil, e
 	}
+	service := Service(*googleService)
+	return &service, nil
+}
 
-	return &Service{
-		clientID:      serviceConfig.ClientID,
-		googleService: googleService,
-	}, nil
+func NewServiceWithApiKey(cfg *google.ServiceWithApiKeyConfig) (*Service, *errortools.Error) {
+	googleService, e := google.NewServiceWithApiKey(cfg)
+	if e != nil {
+		return nil, e
+	}
+	service := Service(*googleService)
+	return &service, nil
+}
+
+func NewServiceWithOAuth2(cfg *google.ServiceWithOAuth2Config) (*Service, *errortools.Error) {
+	googleService, e := google.NewServiceWithOAuth2(cfg)
+	if e != nil {
+		return nil, e
+	}
+	service := Service(*googleService)
+	return &service, nil
 }
 
 func (service *Service) url(path string) string {
-	return fmt.Sprintf("%s/%s", apiURL, path)
+	return fmt.Sprintf("%s/%s", apiUrl, path)
 }
 
-func (service *Service) InitToken(scope string, accessType *string, prompt *string, state *string) *errortools.Error {
-	return service.googleService.InitToken(scope, accessType, prompt, state)
-}
-
-func (service *Service) APIName() string {
+func (service *Service) ApiName() string {
 	return apiName
 }
 
-func (service *Service) APIKey() string {
-	return service.clientID
+func (service *Service) ApiKey() string {
+	return service.googleService().ApiKey()
 }
 
-func (service *Service) APICallCount() int64 {
-	return service.googleService.APICallCount()
+func (service *Service) ApiCallCount() int64 {
+	return service.googleService().ApiCallCount()
 }
 
-func (service *Service) APIReset() {
-	service.googleService.APIReset()
+func (service *Service) ApiReset() {
+	service.googleService().ApiReset()
+}
+
+func (service *Service) googleService() *google.Service {
+	googleService := google.Service(*service)
+	return &googleService
 }

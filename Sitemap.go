@@ -34,7 +34,7 @@ type SitemapContent struct {
 }
 
 type GetSitemapsConfig struct {
-	SiteURL      string
+	SiteUrl      string
 	SitemapIndex *string
 }
 
@@ -49,10 +49,10 @@ func (service *Service) GetSitemaps(config *GetSitemapsConfig) (*[]Sitemap, *err
 
 	requestConfig := go_http.RequestConfig{
 		Method:        http.MethodGet,
-		URL:           service.url(fmt.Sprintf("sites/%s/sitemaps?%s", url.QueryEscape(config.SiteURL), values.Encode())),
+		Url:           service.url(fmt.Sprintf("sites/%s/sitemaps?%s", url.QueryEscape(config.SiteURL), values.Encode())),
 		ResponseModel: &getSitemapsResponse,
 	}
-	_, _, e := service.googleService.HTTPRequest(&requestConfig)
+	_, _, e := service.googleService().HttpRequest(&requestConfig)
 	if e != nil {
 		return nil, e
 	}

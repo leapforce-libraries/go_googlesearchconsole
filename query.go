@@ -93,7 +93,7 @@ type QueryResponseRow struct {
 	Keys        []string `json:"keys"`
 	Impressions float64  `json:"impressions"`
 	Clicks      float64  `json:"clicks"`
-	CTR         float64  `json:"ctr"`
+	Ctr         float64  `json:"ctr"`
 	Position    float64  `json:"position"`
 }
 
@@ -150,11 +150,11 @@ func (service *Service) Query(_queryRequest *QueryRequest, siteURL string) (*Que
 
 	requestConfig := go_http.RequestConfig{
 		Method:        http.MethodPost,
-		URL:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", url.QueryEscape(siteURL))),
+		Url:           service.url(fmt.Sprintf("sites/%s/searchAnalytics/query", url.QueryEscape(siteURL))),
 		BodyModel:     qr,
 		ResponseModel: &response,
 	}
-	_, _, e := service.googleService.HTTPRequest(&requestConfig)
+	_, _, e := service.googleService().HttpRequest(&requestConfig)
 	if e != nil {
 		return nil, e
 	}
