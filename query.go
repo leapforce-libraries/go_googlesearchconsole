@@ -44,6 +44,13 @@ const (
 	GroupTypeAnd GroupType = "AND"
 )
 
+type DataState string
+
+const (
+	DataStateAll  DataState = "all"
+	DataStatFinal DataState = "final"
+)
+
 type QueryRequest struct {
 	StartDate             *time.Time
 	EndDate               *time.Time
@@ -58,8 +65,9 @@ type QueryRequest struct {
 			Expression string
 		}
 	}
-	RowLimit *int
-	StartRow *int
+	RowLimit  *int
+	StartRow  *int
+	DataState *DataState
 }
 
 type queryRequest struct {
@@ -71,6 +79,7 @@ type queryRequest struct {
 	DimensionFilterGroups *[]dimensionFilterGroup `json:"dimensionFilterGroups,omitempty"`
 	RowLimit              *int                    `json:"rowLimit,omitempty"`
 	StartRow              *int                    `json:"startRow,omitempty"`
+	DataState             *DataState              `json:"dataState,omitempty"`
 }
 
 type dimensionFilterGroup struct {
@@ -103,8 +112,9 @@ func (service *Service) Query(_queryRequest *QueryRequest, siteURL string) (*Que
 	}
 
 	qr := queryRequest{
-		RowLimit: _queryRequest.RowLimit,
-		StartRow: _queryRequest.StartRow,
+		RowLimit:  _queryRequest.RowLimit,
+		StartRow:  _queryRequest.StartRow,
+		DataState: _queryRequest.DataState,
 	}
 	if _queryRequest.StartDate != nil {
 		startDate := _queryRequest.StartDate.Format(dateLayout)
